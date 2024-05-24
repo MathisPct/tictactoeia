@@ -7,9 +7,21 @@ class NodeMinMax:
 
     def evalTotal(self):
         if self.current_turn == "X":
-            return self.eval("X") - self.eval("O")
+            print("calc X")
+            x=self.eval("X")
+            print("calc O")
+            o=self.eval("O")
+            print("X - O = ",str(x-o))
+            return x-o
+            #return self.eval("X") - self.eval("O")
         else:
-            return self.eval("O") - self.eval("X")
+            print("calc O")
+            o = self.eval("O")
+            print("calc X")
+            x = self.eval("X")
+            print("O - X = ", str(o-x))
+            return o-x
+            # return self.eval("O") - self.eval("X")
 
     def eval(self, sign):
         total_score = 0
@@ -28,10 +40,12 @@ class NodeMinMax:
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
                         total_score += 10 ** nb_used
+                        print("+ ",str(10 ** nb_used)," ligne ",str(i))
                     nb_used = 0
                     nb_void = 0
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
                 total_score += 10 ** nb_used
+                print("+ ", str(10 ** nb_used), " ligne ", str(i))
             nb_used = 0
             nb_void = 0
 
@@ -44,12 +58,12 @@ class NodeMinMax:
                     nb_used += 1
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                        #print("+ ", str(10 ** nb_used), " colonne ", str(i))
+                        print("+ ", str(10 ** nb_used), " colonne ", str(i))
                         total_score += 10 ** nb_used
                     nb_used = 0
                     nb_void = 0
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                #print("+ ", str(10 ** nb_used), " colonne ", str(i))
+                print("+ ", str(10 ** nb_used), " colonne ", str(i))
                 total_score += 10 ** nb_used
             nb_used = 0
             nb_void = 0
@@ -70,7 +84,7 @@ class NodeMinMax:
                     nb_used += 1
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                        #print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
+                        print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
                         total_score += 10 ** nb_used
                     nb_used = 0
                     nb_void = 0
@@ -78,7 +92,7 @@ class NodeMinMax:
                 row += 1
 
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                #print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
+                print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
                 total_score += 10 ** nb_used
             nb_used = 0
             nb_void = 0
@@ -102,7 +116,7 @@ class NodeMinMax:
                     nb_used += 1
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                        #print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
+                        print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
                         total_score += 10 ** nb_used
                     nb_used = 0
                     nb_void = 0
@@ -110,7 +124,7 @@ class NodeMinMax:
                 row -= 1
 
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                #print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
+                print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
                 total_score += 10 ** nb_used
             nb_used = 0
             nb_void = 0

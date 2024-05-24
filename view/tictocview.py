@@ -28,8 +28,8 @@ class TicTacToeView:
             for col in range(self.model.size_of_grid):
                 rect = pygame.Rect(col * self.cell_size, row * self.cell_size, self.cell_size, self.cell_size)
                 pygame.draw.rect(self.screen, (0, 0, 0), rect, 1)
-                if self.model.Grid[row][col] != '':
-                    text = self.font.render(self.model.Grid[row][col], True, (0, 0, 0))
+                if self.model.board[row][col] != '':
+                    text = self.font.render(self.model.board[row][col], True, (0, 0, 0))
                     text_rect = text.get_rect(center=rect.center)
                     self.screen.blit(text, text_rect)
 
@@ -42,17 +42,17 @@ class TicTacToeView:
             self.screen.blit(text, (self.size // 2 - text.get_width() // 2, self.size // 2 - text.get_height() // 2))
 
     def handle_click(self, pos):
-        # if not self.model.is_draw():
-        #     row, col = pos[1] // self.cell_size, pos[0] // self.cell_size
-        #     self.model.make_move(row, col)
-        root_player_1 = NodeMinMax(self.model.Grid, 'O', self.model.size_of_win)
-        self.model.Grid = min_max(root_player_1, 1)
+        if not self.model.is_draw():
+            row, col = pos[1] // self.cell_size, pos[0] // self.cell_size
+            self.model.make_move(row, col)
+        # root_player_1 = NodeMinMax(self.model.board, 'O', self.model.size_of_win)
+        # self.model.Grid = min_max(root_player_1, 1)
 
         self.draw_winner("1")  # TODO: il faut qu'on vérifie le winner après chaque coup d'un joueur
 
         # fonction node min max
-        root_player_2 = NodeMinMax(self.model.Grid, 'X', self.model.size_of_win)
-        self.model.Grid = min_max(root_player_2, 2)
+        root_player_2 = NodeMinMax(self.model.board, 'X', self.model.size_of_win)
+        self.model.board = min_max(root_player_2, 1)
 
     def run(self):
         running = True
