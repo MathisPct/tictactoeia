@@ -4,6 +4,9 @@ import sys
 from algo.alpha_beta_test_mathis import alpha_beta
 from algo.state import State
 from algo.grid import Grid
+from algo.state_eval_2 import StateEval2
+from algo.state_eval_immediate import StateEvalImmediate
+
 
 class TicTacToeView:
     def __init__(self, grid_size, size_of_win):
@@ -47,7 +50,8 @@ class TicTacToeView:
         if self.grid.check_winner() is not None or self.grid.is_full():
             return
 
-        root_player_2 = State(self.grid, 'X', 'X')
+        # root_player_2 = StateEval2(self.grid, 'X', 'X')
+        root_player_2 = StateEvalImmediate(self.grid, 'X', 'X')
         action_player_2 = alpha_beta(root_player_2, 3)
         self.grid.make_action(action_player_2, 'X')
 

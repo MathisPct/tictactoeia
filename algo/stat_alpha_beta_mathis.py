@@ -3,6 +3,8 @@ import random
 from algo.alpha_beta_test_mathis import alpha_beta
 from algo.grid import Grid
 from algo.state import State
+from algo.state_eval_2 import StateEval2
+from algo.state_eval_immediate import StateEvalImmediate
 
 if __name__ == '__main__':
     player_1 = 'O'
@@ -12,14 +14,14 @@ if __name__ == '__main__':
     nb_win_2 = 0
     nb_draw = 0
 
-    trying = 1000
+    trying = 100
     for i in range(trying):
         size_of_grid = 6
         size_of_win = 4
         grid = Grid(size_of_grid, size_of_win)
         while grid.is_full() is False and grid.check_winner() is None:
-            root_player_1 = State(grid.copy(), player_1, player_1)
-            action_player_1 = alpha_beta(root_player_1, 1)
+            root_player_1 = StateEval2(grid.copy(), player_1, player_1)
+            action_player_1 = alpha_beta(root_player_1, 2)
             grid.make_action(action_player_1, player_1)
             print("Le joueur 1 a joué :")
             print(grid)
@@ -27,8 +29,8 @@ if __name__ == '__main__':
             if grid.is_full() or grid.check_winner() is not None:
                 break
 
-            root_player_2 = State(grid.copy(), player_2, player_2)
-            action_player_2 = alpha_beta(root_player_2, 2)
+            root_player_2 = StateEvalImmediate(grid.copy(), player_2, player_2)
+            action_player_2 = alpha_beta(root_player_2, 3)
             grid.make_action(action_player_2, player_2)
             # fonction aléatoire
             # grid.make_action(random.choice(grid.actions), player_2)

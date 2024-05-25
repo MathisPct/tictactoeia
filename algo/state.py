@@ -1,7 +1,9 @@
+from abc import ABC, abstractmethod
+
 from algo.grid import Grid
 
 
-class State:
+class State(ABC):
     def __init__(self, grid: Grid, player, root_player):
         self.grid = grid
         self.player = player
@@ -20,9 +22,13 @@ class State:
         return self.grid.is_full()
 
     def evalTotal(self):
-        return self.eval_3(self.root_player)
+        return self.eval(self.root_player)
 
+    @abstractmethod
     def eval(self, sign):
+        pass
+
+    def eval_1(self, sign):
         total_score = 0
         nb_void = 0
         nb_used = 0
@@ -251,6 +257,6 @@ class State:
 
         return score
 
-
+    @abstractmethod
     def copy(self):
-        return State(self.grid.copy(), self.player, self.root_player)
+        pass
