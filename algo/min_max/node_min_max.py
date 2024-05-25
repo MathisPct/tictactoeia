@@ -5,34 +5,34 @@ class NodeMinMax:
         self.size_of_win = size_of_win
         self.children_node = []
 
-    def evalTotal(self, root_player):
-        for i in range(len(self.board)):
-            print(self.board[i])
+    def evalTotal(self, root_player_sign):
+        #for i in range(len(self.board)):
+            #print(self.board[i])
         # if self.current_turn == "X":
-        #     print("calc X")
+        #     #print("calc X")
         #     x=self.eval("X")
-        #     print("calc O")
+        #     #print("calc O")
         #     o=self.eval("O")
-        #     print("X - O = ",str(x-o))
+        #     #print("X - O = ",str(x-o))
         #     return x-o
         #     #return self.eval("X") - self.eval("O")
         # else:
-        #     print("calc O")
+        #     #print("calc O")
         #     o = self.eval("O")
-        #     print("calc X")
+        #     #print("calc X")
         #     x = self.eval("X")
-        #     print("O - X = ", str(o-x))
+        #     #print("O - X = ", str(o-x))
         #     return o-x
 
-        print(root_player.current_turn)
-        arg_1=self.eval(root_player.current_turn)
+        #print(root_player.current_turn)
+        arg_1=self.eval(root_player_sign)
 
-        print("X" if root_player.current_turn == "O" else "O")
-        arg_2=self.eval("X" if root_player.current_turn == "O" else "O")
+        #print("X" if root_player.current_turn == "O" else "O")
+        arg_2=self.eval("X" if root_player_sign == "O" else "O")
 
         res=arg_1-arg_2
 
-        print(root_player.current_turn," - ","X" if root_player.current_turn == "O" else "O"," = ",str(res))
+        #print(root_player_sign," - ","X" if root_player_sign == "O" else "O"," = ",str(res))
         return res
 
     def eval(self, sign):
@@ -40,7 +40,7 @@ class NodeMinMax:
         nb_void = 0
         nb_used = 0
 
-        #print("Signe :", sign)
+        ##print("Signe :", sign)
 
         # test des valeurs de lignes
         for i in range(len(self.board)):
@@ -52,12 +52,12 @@ class NodeMinMax:
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
                         total_score += 10 ** nb_used
-                        print("+ ",str(10 ** nb_used)," ligne ",str(i))
+                        #print("+ ",str(10 ** nb_used)," ligne ",str(i))
                     nb_used = 0
                     nb_void = 0
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
                 total_score += 10 ** nb_used
-                print("+ ", str(10 ** nb_used), " ligne ", str(i))
+                #print("+ ", str(10 ** nb_used), " ligne ", str(i))
             nb_used = 0
             nb_void = 0
 
@@ -70,18 +70,18 @@ class NodeMinMax:
                     nb_used += 1
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                        print("+ ", str(10 ** nb_used), " colonne ", str(i))
+                        #print("+ ", str(10 ** nb_used), " colonne ", str(i))
                         total_score += 10 ** nb_used
                     nb_used = 0
                     nb_void = 0
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                print("+ ", str(10 ** nb_used), " colonne ", str(i))
+                #print("+ ", str(10 ** nb_used), " colonne ", str(i))
                 total_score += 10 ** nb_used
             nb_used = 0
             nb_void = 0
 
         # test des valeurs de diagonales
-        # diagonale principale
+        # diagonale #principale
 
         init_col = 0
         init_row = len(self.board) - self.size_of_win
@@ -96,7 +96,7 @@ class NodeMinMax:
                     nb_used += 1
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                        print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
+                        #print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
                         total_score += 10 ** nb_used
                     nb_used = 0
                     nb_void = 0
@@ -104,7 +104,7 @@ class NodeMinMax:
                 row += 1
 
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
+                #print("+ ", str(10 ** nb_used), " diag ", init_row, ":", init_col)
                 total_score += 10 ** nb_used
             nb_used = 0
             nb_void = 0
@@ -114,7 +114,7 @@ class NodeMinMax:
             else:
                 init_row -= 1
 
-        # diagonale principale secondaire
+        # diagonale #principale secondaire
         init_col = 0
         init_row = self.size_of_win - 1
 
@@ -128,7 +128,7 @@ class NodeMinMax:
                     nb_used += 1
                 else:
                     if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                        print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
+                        #print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
                         total_score += 10 ** nb_used
                     nb_used = 0
                     nb_void = 0
@@ -136,7 +136,7 @@ class NodeMinMax:
                 row -= 1
 
             if nb_used + nb_void >= self.size_of_win and nb_used > 0:
-                print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
+                #print("+ ", str(10 ** nb_used), " anti diag ", init_row, ":", init_col)
                 total_score += 10 ** nb_used
             nb_used = 0
             nb_void = 0

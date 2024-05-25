@@ -52,7 +52,7 @@ class TicTacToeView:
 
         # fonction node min max
         root_player_2 = NodeMinMax(self.model.board, 'X', self.model.size_of_win)
-        self.model.board = min_max(root_player_2, 2)
+        self.model.board = min_max(root_player_2, 3)
 
     def run(self):
         running = True

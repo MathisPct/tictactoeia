@@ -17,44 +17,44 @@ if __name__ == '__main__':
     for i in range(10):
         finish = False
         model = TicTacToeModel(size_of_grid, size_of_win)
-        print("Jeu :",str(i))
+        #print("Jeu :",str(i))
         while finish == False:
 
             root_player_1 = NodeMinMax(model.board, 'O', model.size_of_win)
-            model.board = min_max(root_player_1, 1)
+            model.board = min_max(root_player_1, 3)
 
-            print("------------------")
-            for i in range(len(model.board)):
-                print(model.board[i])
+            #print("------------------")
+            #for i in range(len(model.board)):
+                #print(model.board[i])
 
             if model.check_winner():
                 finish = True
-                print("1 Win")
+                #print("1 Win")
                 nb_win_1 += 1
                 break
 
             if model.is_draw():
                 finish = True
-                print("Draw")
+                #print("Draw")
                 nb_draw += 1
                 break
 
             # fonction node min max
             root_player_2 = NodeMinMax(model.board, 'X', model.size_of_win)
             model.board = min_max(root_player_2, 1)
-            print("------------------")
-            for i in range(len(model.board)):
-                print(model.board[i])
+            #print("------------------")
+            #for i in range(len(model.board)):
+                #print(model.board[i])
 
             if model.check_winner():
                 finish = True
-                print("2 Win")
+                #print("2 Win")
                 nb_win_2 += 1
                 break
 
             if model.is_draw():
                 finish = True
-                print("Draw")
+                #print("Draw")
                 break
 
     pourcentage_victoire_1 = nb_win_1 / 10 * 100
