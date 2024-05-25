@@ -8,7 +8,7 @@ from model.tictactoemodel import TicTacToeModel
 if __name__ == '__main__':
     size_of_grid = 5
     size_of_win = 4
-    model = TicTacToeModel(size_of_grid, size_of_win)
+    model = None
 
     nb_win_1 = 0
     nb_win_2 = 0
@@ -16,11 +16,12 @@ if __name__ == '__main__':
 
     for i in range(10):
         finish = False
+        model = TicTacToeModel(size_of_grid, size_of_win)
         print("Jeu :",str(i))
         while finish == False:
 
-            root_player_1 = NodeAlphaBeta(model.board, 'O', model.size_of_win)
-            model.board = alpha_beta(root_player_1, 2)
+            root_player_1 = NodeMinMax(model.board, 'O', model.size_of_win)
+            model.board = min_max(root_player_1, 1)
 
             print("------------------")
             for i in range(len(model.board)):
@@ -39,8 +40,8 @@ if __name__ == '__main__':
                 break
 
             # fonction node min max
-            root_player_2 = NodeAlphaBeta(model.board, 'X', model.size_of_win)
-            model.board = alpha_beta(root_player_2, 2)
+            root_player_2 = NodeMinMax(model.board, 'X', model.size_of_win)
+            model.board = min_max(root_player_2, 1)
             print("------------------")
             for i in range(len(model.board)):
                 print(model.board[i])

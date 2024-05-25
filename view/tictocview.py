@@ -46,13 +46,13 @@ class TicTacToeView:
             row, col = pos[1] // self.cell_size, pos[0] // self.cell_size
             self.model.make_move(row, col)
         # root_player_1 = NodeMinMax(self.model.board, 'O', self.model.size_of_win)
-        # self.model.Grid = min_max(root_player_1, 1)
+        # self.model.board = min_max(root_player_1, 1)
 
         self.draw_winner("1")  # TODO: il faut qu'on vérifie le winner après chaque coup d'un joueur
 
         # fonction node min max
         root_player_2 = NodeMinMax(self.model.board, 'X', self.model.size_of_win)
-        self.model.board = min_max(root_player_2, 1)
+        self.model.board = min_max(root_player_2, 2)
 
     def run(self):
         running = True

@@ -5,23 +5,35 @@ class NodeMinMax:
         self.size_of_win = size_of_win
         self.children_node = []
 
-    def evalTotal(self):
-        if self.current_turn == "X":
-            print("calc X")
-            x=self.eval("X")
-            print("calc O")
-            o=self.eval("O")
-            print("X - O = ",str(x-o))
-            return x-o
-            #return self.eval("X") - self.eval("O")
-        else:
-            print("calc O")
-            o = self.eval("O")
-            print("calc X")
-            x = self.eval("X")
-            print("O - X = ", str(o-x))
-            return o-x
-            # return self.eval("O") - self.eval("X")
+    def evalTotal(self, root_player):
+        for i in range(len(self.board)):
+            print(self.board[i])
+        # if self.current_turn == "X":
+        #     print("calc X")
+        #     x=self.eval("X")
+        #     print("calc O")
+        #     o=self.eval("O")
+        #     print("X - O = ",str(x-o))
+        #     return x-o
+        #     #return self.eval("X") - self.eval("O")
+        # else:
+        #     print("calc O")
+        #     o = self.eval("O")
+        #     print("calc X")
+        #     x = self.eval("X")
+        #     print("O - X = ", str(o-x))
+        #     return o-x
+
+        print(root_player.current_turn)
+        arg_1=self.eval(root_player.current_turn)
+
+        print("X" if root_player.current_turn == "O" else "O")
+        arg_2=self.eval("X" if root_player.current_turn == "O" else "O")
+
+        res=arg_1-arg_2
+
+        print(root_player.current_turn," - ","X" if root_player.current_turn == "O" else "O"," = ",str(res))
+        return res
 
     def eval(self, sign):
         total_score = 0
