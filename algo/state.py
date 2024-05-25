@@ -20,7 +20,7 @@ class State:
         return self.grid.is_full()
 
     def evalTotal(self):
-        return self.eval(self.root_player) - self.eval("O" if self.root_player == "X" else "X")
+        return self.eval_3(self.root_player)
 
     def eval(self, sign):
         total_score = 0
@@ -135,5 +135,122 @@ class State:
 
         return total_score
 
+    def eval_2(self, sign):
+
+        opponent = "O" if sign == "X" else "X"
+        score = 0
+
+        def evaluate_line(line):
+            count_sign = line.count(sign)
+            count_opponent = line.count(opponent)
+            count_empty = line.count("")
+
+            if count_sign > 0 and count_opponent == 0:
+                return 10 ** (count_sign)
+
+            elif count_opponent > 0 and count_sign == 0:
+                return -(10 ** (count_opponent))
+
+            return 0
+
+        def get_lines():
+            lines = []
+            for i in range(self.grid.size_of_grid):
+                row = [self.grid.symbol_at(i, j) for j in range(self.grid.size_of_grid)]
+                for k in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                    lines.append(row[k:k + self.grid.size_of_win])
+
+            for j in range(self.grid.size_of_grid):
+                col = [self.grid.symbol_at(i, j) for i in range(self.grid.size_of_grid)]
+                for k in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                    lines.append(col[k:k + self.grid.size_of_win])
+
+            # Check main diagonals
+
+            for i in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                for j in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                    main_diag = [self.grid.symbol_at(i + k, j + k) for k in range(self.grid.size_of_win)]
+                    lines.append(main_diag)
+                    anti_diag = [self.grid.symbol_at(i + k, j + self.grid.size_of_win - 1 - k) for k in
+                                 range(self.grid.size_of_win)]
+                    lines.append(anti_diag)
+
+            return lines
+
+        # Evaluate all lines
+
+        lines = get_lines()
+
+        for line in lines:
+            score += evaluate_line(line)
+
+        return score
+
+    """ 
+    Prise en compte des menaces immédiates
+    """
+    def eval_3(self, sign):
+        opponent = "O" if sign == "X" else "X"
+        score = 0
+
+        def evaluate_alignment(line):
+            count_sign = line.count(sign)
+            count_opponent = line.count(opponent)
+            count_empty = line.count("")
+
+            if count_sign == self.grid.size_of_win:
+                return 10**self.grid.size_of_win # Maximal favorabilité pour l'IA
+
+            elif count_opponent == self.grid.size_of_win:
+                return -11**self.grid.size_of_win  # Pour éviter que l'IA perde. Même si elle retarde le fait de gagnger
+
+            if count_sign > 0 and count_opponent == 0:
+                return 10 ** count_sign
+
+            elif count_opponent > 0 and count_sign == 0:
+                return -(10 ** count_opponent)
+
+            return 0
+
+        def get_lines():
+
+            lines = []
+
+            # Check rows
+            for i in range(self.grid.size_of_grid):
+                row = [self.grid.symbol_at(i, j) for j in range(self.grid.size_of_grid)]
+                for k in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                    lines.append(row[k:k + self.grid.size_of_win])
+
+            # Check columns
+
+            for j in range(self.grid.size_of_grid):
+                col = [self.grid.symbol_at(i, j) for i in range(self.grid.size_of_grid)]
+                for k in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                    lines.append(col[k:k + self.grid.size_of_win])
+
+            # Check main diagonals
+
+            for i in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                for j in range(self.grid.size_of_grid - self.grid.size_of_win + 1):
+                    main_diag = [self.grid.symbol_at(i + k, j + k) for k in range(self.grid.size_of_win)]
+                    lines.append(main_diag)
+                    anti_diag = [self.grid.symbol_at(i + k, j + self.grid.size_of_win - 1 - k) for k in
+                                 range(self.grid.size_of_win)]
+                    lines.append(anti_diag)
+
+            return lines
+
+        # Evaluate all lines
+
+        lines = get_lines()
+
+        for line in lines:
+            line_score = evaluate_alignment(line)
+            score += line_score
+
+        return score
+
+
     def copy(self):
-        return State(self.grid, self.player, self.root_player)
+        return State(self.grid.copy(), self.player, self.root_player)

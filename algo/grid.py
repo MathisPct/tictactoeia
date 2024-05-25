@@ -1,12 +1,12 @@
 class Grid:
-    def __init__(self, grid_size, size_of_win):
+    def __init__(self, grid_size, size_of_win, grid=None):
         self.size_of_grid = grid_size
         self.size_of_win = size_of_win
-        self.grid = [["" for _ in range(grid_size)] for _ in range(grid_size)]
-        self.actions = [(i, j) for i in range(grid_size) for j in range(grid_size)]
+        self.grid = grid or [["" for _ in range(grid_size)] for _ in range(grid_size)]
+        self.actions = [(i, j) for i in range(grid_size) for j in range(grid_size) if self.grid[i][j] == ""]
 
     def __str__(self):
-        return '\n'.join([' '.join([str(cell) for cell in row]) for row in self.grid])
+        return '\n'.join([' '.join([str(cell) if cell!= "" else "." for cell in row]) for row in self.grid])
 
     def symbol_at(self, row, col):
         return self.grid[row][col]
@@ -84,4 +84,6 @@ class Grid:
                             return self.grid[row][col]
 
         return None
-        
+
+    def copy(self):
+        return Grid(self.size_of_grid, self.size_of_win, grid=[row.copy() for row in self.grid])
