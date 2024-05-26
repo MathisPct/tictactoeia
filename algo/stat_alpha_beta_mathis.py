@@ -2,6 +2,7 @@ import random
 
 from algo.alpha_beta_test_mathis import alpha_beta
 from algo.grid import Grid
+from algo.mini_max_mathis import min_max
 from algo.state import State
 from algo.state_eval_2 import StateEval2
 from algo.state_eval_immediate import StateEvalImmediate
@@ -14,14 +15,14 @@ if __name__ == '__main__':
     nb_win_2 = 0
     nb_draw = 0
 
-    trying = 100
+    trying = 1
     for i in range(trying):
         size_of_grid = 6
         size_of_win = 4
         grid = Grid(size_of_grid, size_of_win)
         while grid.is_full() is False and grid.check_winner() is None:
-            root_player_1 = StateEval2(grid.copy(), player_1, player_1)
-            action_player_1 = alpha_beta(root_player_1, 2)
+            root_player_1 = StateEvalImmediate(grid.copy(), player_1, player_1)
+            action_player_1 = min_max(root_player_1, 3)
             grid.make_action(action_player_1, player_1)
             print("Le joueur 1 a joué :")
             print(grid)
