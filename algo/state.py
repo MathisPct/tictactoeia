@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from algo.grid import Grid
+from model.grid import Grid
 
 
 class State(ABC):

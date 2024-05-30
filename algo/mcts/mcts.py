@@ -1,20 +1,19 @@
-import math
 import random
+import math
 
 from algo.mcts.node_mcts import NodeMcts
 
 
-def uct_search(root, current_turn, size_of_win):
-    """Monte Carlo Tree Search"""
-    root = NodeMcts(root.Grid, current_turn, size_of_win)
-    for _ in range(1000):
-        node = TreePolicy(root)
+def uct_search(root_board, current_turn, size_of_win):
+    root = NodeMcts(root_board, current_turn, size_of_win)
+    for i in range(1000):
+        node = tree_policy(root)
         reward = estimate_victory(node)
         backup(node, reward)
     return best_child(root, 0)
 
 
-def TreePolicy(node):
+def tree_policy(node):
     while node.is_non_terminal():
         if not node.is_fully_expanded():
             return expand(node)
@@ -24,78 +23,62 @@ def TreePolicy(node):
 
 
 def expand(node):
-    for i in range(len(node.Grid)):
-        for j in range(len(node.Grid)):
-            if node.Grid[i][j] == '':
-                new_board = [row[:] for row in node.Grid]
-                next_turn = '0' if node.player == 'X' else 'X'
-                new_board[i][j] = next_turn
-                unvisited_node = NodeMcts(new_board, next_turn, node.size_of_win, node)
-                node.children.append(unvisited_node)
-                return unvisited_node
+    if node.untried_moves:
+        move = random.choice(node.untried_moves)
+        node.untried_moves.remove(move)
+        i, j = move
+        next_turn = 'O' if node.current_turn == 'X' else 'X'
+        new_board = [row[:] for row in node.board]
+        new_board[i][j] = node.current_turn
+        child_node = NodeMcts(new_board, next_turn, node.size_of_win, node)
+        node.children.append(child_node)
+        print(f"Expanding: Placing {node.current_turn} at ({i}, {j})")
+        return child_node
+    else:
+        raise Exception("Should not call expand on a fully expanded node")
 
 
 def best_child(node, constante_divergence):
-    max = 0
-    max_child = None
+    best_value = -float('inf')
+    best_node = None
 
     for child in node.children:
-        if node.score==0 or child.score==0:
-            score=math.inf
+        if child.nb_passage == 0:
+            uct_value = float('inf')
         else:
-            if child.nb_passage==0:
-                print("nb_passage: ", child.nb_passage)
-            if child.score == 0:
-                print("child.score: ", child.score())
-            if node.score== 0:
-                print("node.score: ", node.score)
+            uct_value = (child.score / child.nb_passage) + constante_divergence * math.sqrt(
+                math.log(node.nb_passage) / child.nb_passage)
 
-            try:
-                score = child.score / child.nb_passage + constante_divergence * (math.sqrt((2 * math.log(node.score)) / child.score))
-            except ValueError:
-                print("child nb passage", child.nb_passage)
-                print("child score: ", child.score)
-                print("parent score: ", node.score)
+        print(f"Child with score {child.score} and visits {child.nb_passage} has UCT value {uct_value}")
 
-        if score > max:
-            max = score
-            max_child = child
+        if uct_value > best_value:
+            best_value = uct_value
+            best_node = child
 
-    return max_child
+    return best_node
 
 
-def backup(v, reward):
-    current_node = v
-    while current_node is not None:
-        current_node.nb_passage += 1
-        current_node.score += reward
+def backup(node, reward):
+    while node is not None:
+        node.nb_passage += 1
+        node.score += reward
         reward = -reward
-        current_node = current_node.parent
+        node = node.parent
 
 
 def estimate_victory(node):
-    list_action = []
-    board = [row[:] for row in node.Grid]
-    estimated_node = NodeMcts(board, 'O' if node.player == 'X' else 'X', node.size_of_win)
+    simulated_node = NodeMcts([row[:] for row in node.board], node.current_turn, node.size_of_win)
+    available_moves = [(i, j) for i in range(len(node.board)) for j in range(len(node.board[i])) if node.board[i][j] == '']
+    current_turn = node.current_turn
 
-    for i in range(len(estimated_node.board)):
-        for j in range(len(estimated_node.board)):
-            if estimated_node.board[i][j] == '':
-                list_action.append((i, j))
-
-    while len(list_action) > 0:
-        position = random.choice(list_action)
-        estimated_node.board[position[0]][position[1]] = estimated_node.current_turn
-        list_action.remove(position)
-
-        is_winning = estimated_node.is_winning(position[0], position[1])
-
-        if is_winning and estimated_node.current_turn == node.player:
-            return 1
-
-        elif is_winning and estimated_node.current_turn != node.player:
-            return -1
-
-        estimated_node.current_turn = 'O' if estimated_node.current_turn == 'X' else 'X'
+    while available_moves:
+        x, y = random.choice(available_moves)
+        available_moves.remove((x, y))
+        simulated_node.board[x][y] = current_turn
+        if simulated_node.is_winning(x, y):
+            return 1 if current_turn == node.current_turn else -1
+        current_turn = 'O' if current_turn == 'X' else 'X'
 
     return 0
+
+

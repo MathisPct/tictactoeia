@@ -1,4 +1,3 @@
-from model.tictactoemodel import TicTacToeModel
 from view.tictocview import TicTacToeView
 
 if __name__ == '__main__':
