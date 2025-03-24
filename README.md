@@ -23,11 +23,11 @@ La courbe bleu et l’axe des ordonnées à droites et le nombre de cases vides 
 
 On voit que l’élagage de branches ajoutées dans Alpha Beta permet de limiter une exploration trop profonde et donc d’éviter la création de nouveaux états à explorer. Cela évite en plus de lancer une évaluation sur une branche qui ne nécessitait aucune évaluation.
 
-![](/doc/image2)
+![](/doc/image2.png)
 
 La différence de nombres d’états créés entre les 2 algos sur chaque tour est conséquente. Rien que sur le 1 er tour, on a entre 35 000 et 40 000 nœuds en moins qui ne sont pas créés pour l’algorithme alpha-beta.
 
-## En termes de temps d’exécution {#en-termes-de-temps-d’exécution}
+## En termes de temps d’exécution
 
 Pour le temps d’exécution, on voit bien qu’Alpha-Beta est l’algorithme le plus rapide. En effet, beaucoup moins d’états sont explorés \=\> le nombre d’appel de la fonction d’évaluations est donc forcément beaucoup moins important dans l’algorithme AlphaBeta. Etant donnée que l’on fait un parcours dans un tableau 2 dimensions, c’est la partie de l’algorithme qui peut faire perdre le plus de temps.
 
