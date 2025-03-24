@@ -1,21 +1,8 @@
-**Table des matières**
-
-**[Minimax VS Alpha-Beta	2](#minimax-vs-alpha-beta)**
-
-[En termes de nœuds crées	2](#en-termes-de-nœuds-crées)  
-[En termes de temps d’exécution	3](#en-termes-de-temps-d’exécution)
-
-[**Performances agent contre agent	4**](#performances-agent-contre-agent)
-
-[Alpha Beta / Min-Max	4](#alpha-beta-/-min-max)  
-[*Les fonctions d’évaluations mis en place	4*](#les-fonctions-d’évaluations-mis-en-place)  
-[*Test IA contre adversaire multiple	5*](#test-ia-contre-adversaire-multiple)
-
-# Minimax VS Alpha-Beta  {#minimax-vs-alpha-beta}
+# Minimax VS Alpha-Beta
 
 Les tests ci-dessous sont effectuées sur un plateau de 6x6 cases, soit 36 cases vides initialement. Chaque agent a une profondeur de 3\. Pour les tests, nous avons d’abord fait une partie en faisant commencé minimax, puis on a ensuite interverti en faisant commencer alpha-beta. Cela nous a permis d’avoir le nombre d’états par tour pour les 2 joueurs. 
 
-## En termes de nœuds crées {#en-termes-de-nœuds-crées}
+## En termes de nœuds crées
 
 La courbe bleu et l’axe des ordonnées à droites et le nombre de cases vides par tour. C’est évidemment une fonction qui décroit car à chaque tour 2 pions sont ajoutés avec comme équation de droite y=- (numero\_tour)+ nombre\_de\_cases\_du\_plateau
 
@@ -33,13 +20,13 @@ Pour le temps d’exécution, on voit bien qu’Alpha-Beta est l’algorithme le
 
 ![](/doc/image3.png)
 
-# Performances agent contre agent {#performances-agent-contre-agent}
+# Performances agent contre agent
 
-## Alpha Beta / Min-Max {#alpha-beta-/-min-max}
+## Alpha Beta / Min-Max
 
 Afin de gagner du temps, nous avons estimer que les performances d’alpha-beta et min-max étaient similaires. En effet, le principe est le même pour les 2 algorithmes et ils donnent tout 2 le même résultat. Les seules différences sont que l’algorithme alpha-beta est plus optimisée et permet d’obtenir un résultat avec un temps d’exécution nettement inférieur à min-max (voir cette partie **En termes de temps d’exécution**) grâce au principe d’élagage de branches effectués par Alpha Beta.
 
-### Les fonctions d’évaluations mis en place {#les-fonctions-d’évaluations-mis-en-place}
+### Les fonctions d’évaluations mis en place
 
 | Nom | Description |
 | :---- | :---- |
@@ -62,7 +49,7 @@ Cela nous a amené à mettre en place une nouvelle fonction d’évaluation 3, *
 
 On voit qu’à l’étape 4, cette IA prend en compte le malus attribué à un état qui fait que l’adversaire peut gagner. Elle choisit donc de bloquer le prochain coup gagnant du joueur adverse.
 
-### Test IA contre adversaire multiple {#test-ia-contre-adversaire-multiple}
+### Test IA contre adversaire multiple
 
 Les essais ont été fait sur un tableau de taille 6x6 avec une taille de victoire de 4 pions alignés.
 
